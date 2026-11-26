@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageContainer } from "../components";
 import { ArrowRight, Trash } from "lucide-react";
-import { tenants } from "@/src/lib/tenants";
+import { rootDomain, tenants } from "@/src/lib";
 
 export default function SchoolsList() {
     return (
@@ -25,7 +25,7 @@ export default function SchoolsList() {
                                         <span className="font-bold text-2xl">{item[1].icon}</span>
                                         <span className="text-xs text-gray-400">Created: {item[1].createdAt}</span>
                                     </div>
-                                    <Link href={``} className="text-xs text-indigo-800 flex items-center gap-1">
+                                    <Link target="_blank" href={`http://${item[0]}.${rootDomain}`} className="text-xs text-indigo-800 flex items-center gap-1">
                                         <span>Open School</span>
                                         <ArrowRight size={13} />
                                     </Link>
