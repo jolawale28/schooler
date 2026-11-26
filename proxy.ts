@@ -26,7 +26,7 @@ export function proxy(request: NextRequest) {
     // Here, we return the 404 in the proxy, before any page renders.
     // A page that calls notFound() inside Suspense still responds with status 200.
     if (!getTenant(tenant)) {
-        return new NextResponse(`Not found tenant - ${tenant}`, { status: 404 });
+        return new NextResponse(`Not found tenant - ${tenant}, ${host}`, { status: 404 });
     }
 
     // We clone nextUrl instead of building a new URL, so that the query
