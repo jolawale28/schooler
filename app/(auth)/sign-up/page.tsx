@@ -1,28 +1,39 @@
 'use client'
 
-import { Button, Description, FieldError, Form, Input, Label, Surface, TextField } from "@heroui/react";
+import { useTenant } from "@/app/src";
+import { Button, FieldError, Form, Input, Label, Surface, TextField } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+
+    const router = useRouter()
+
+    const { schools, registerSchool } = useTenant();
+    console.log(schools, " :: schools")
 
     const onSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const data: Record<string, string> = {};
 
-        // Convert FormData to plain object
-        formData.forEach((value, key) => {
-            data[key] = value.toString();
+        const school = registerSchool({
+            schoolName: String(formData.get("school_name")),
+            adminName: String(formData.get("admin_name")),
+            email: String(formData.get("school_email")),
         });
+        console.log(school, " :: school")
 
-        alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
+        // router.push(`http://${school.slug}.${window.location.host}/sign-in`)
     };
 
     return (
         <div className="space-y-10 flex flex-col items-center justify-center h-screen">
+            {
+                schools.map(sch => sch.slug).join(", ")
+            }
             <div>
-                <Image width={100} height={1} className="w-50" src = "/graduation_cap.jpg" loading="eager" alt = "tenant_icon" />
+                <Image width={100} height={1} className="w-50" src="/graduation_cap.jpg" loading="eager" alt="tenant_icon" />
             </div>
             <Surface className="flex min-w-[320px] flex-col gap-3 rounded-3xl p-6 border border-gray-100" variant="default">
                 <h3 className="text-base font-semibold text-foreground">Register School account</h3>
@@ -39,18 +50,18 @@ export default function SignUp() {
 
                     <TextField
                         isRequired
-                        name="school_id"
+                        name="admin_name"
                         type="text"
                     >
-                        <Label>Unique ID</Label>
+                        <Label>Admin name</Label>
                         <Input placeholder="" />
                         <FieldError />
                     </TextField>
 
                     <TextField
                         isRequired
-                        name="school_id"
-                        type="text"
+                        name="school_email"
+                        type="email"
                     >
                         <Label>School Email</Label>
                         <Input placeholder="" />
